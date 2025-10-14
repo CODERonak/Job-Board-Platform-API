@@ -21,5 +21,5 @@ public interface UsersMapper {
 
     // Maps Users entity to LoginResponse
     @Mapping(target = "token", ignore = true)
-    RegisterResponse toLoginResponse(Users entity);
+    LoginResponse toLoginResponse(Users entity);
 }
