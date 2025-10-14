@@ -5,15 +5,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.JobBoardAPI.UsersRepository;
-import com.project.JobBoardAPI.dto.users.LoginRequest;
-import com.project.JobBoardAPI.dto.users.LoginResponse;
-import com.project.JobBoardAPI.dto.users.RegisterRequest;
-import com.project.JobBoardAPI.dto.users.RegisterResponse;
+import com.project.JobBoardAPI.dto.users.*;
+import com.project.JobBoardAPI.exceptions.custom.*;
 import com.project.JobBoardAPI.mapper.UsersMapper;
 import com.project.JobBoardAPI.model.entity.Users;
 import com.project.JobBoardAPI.model.enums.Role;
@@ -31,8 +28,16 @@ public class UsersServiceImpl implements UserService {
    private final JWTUtil jwtUtil;
    private final AuthenticationManager authenticationManager;
 
+   // Register a new user
+   // If the user already exists, throws an exception
+   // Otherwise, saves the user and generates a JWT token
    @Override
    public RegisterResponse register(RegisterRequest registerRequest) {
+
+      if (usersRepository.existsByEmail(registerRequest.getEmail())) {
+         throw new AlreadyExistsException("User already exists");
+      }
+
       Users user = usersMapper.toEntity(registerRequest);
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -47,6 +52,9 @@ public class UsersServiceImpl implements UserService {
       return response;
    }
 
+   // Login a user
+   // If the user does not exist, throws an exception
+   // Otherwise, generates a JWT token and returns the user details
    @Override
    public LoginResponse login(LoginRequest loginRequest) {
        try {
@@ -61,7 +69,7 @@ public class UsersServiceImpl implements UserService {
 
             // finds the user by email
             Users loggedInUser = usersRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                    .orElseThrow(() -> new NotFoundException("User not found"));
 
             LoginResponse response = usersMapper.toLoginResponse(loggedInUser);
 
@@ -71,7 +79,7 @@ public class UsersServiceImpl implements UserService {
 
             // if authentication fails, throws an exception
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Invalid email or password");
+            throw new InvalidCredentials("Invalid email or password");
         }
    }
 

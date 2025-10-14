@@ -2,10 +2,10 @@ package com.project.JobBoardAPI.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.project.JobBoardAPI.UsersRepository;
+import com.project.JobBoardAPI.exceptions.custom.NotFoundException;
 import com.project.JobBoardAPI.model.entity.Users;
 
 import lombok.AllArgsConstructor;
@@ -19,9 +19,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UsersRepository usersRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws NotFoundException {
         Users user = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         return new CustomUserDetails(user);
     }
