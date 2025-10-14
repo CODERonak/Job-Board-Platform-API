@@ -3,6 +3,7 @@ package com.project.JobBoardAPI.security;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.project.JobBoardAPI.UsersRepository;
 import com.project.JobBoardAPI.model.entity.Users;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 
 // Custom user details service for Spring Security
 // It loads user details from the database based on the provided email
+@Service
 @AllArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 

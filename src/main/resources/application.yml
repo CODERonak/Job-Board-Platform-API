@@ -20,3 +20,7 @@ spring:
     user:
       name: boot
       password: spring
+
+jwt:
+  secret: "8042961753092846571938205467319824057168392046571283950647182937"
+  expiration: 360000000
