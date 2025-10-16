@@ -42,16 +42,42 @@ public class ProfileServiceImpl implements ProfileService {
         return profileMapper.toResponse(userProfile);
     }
 
+    // gets profile by id
+    // if the profile does not exist, throws an exception
     @Override
     public ProfileResponse getProfile(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getProfile'");
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Profile not found"));
+
+        return profileMapper.toResponse(profile);
     }
 
+    // updates profile
+    // if the profile does not exist, throws an exception
+    // if the user is not the owner of the profile, throws an exception
     @Override
     public ProfileResponse updateProfile(Long id, ProfileRequest profileRequest) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProfile'");
+        Users user = getAuthenticatedUser();
+        Long verifiedUserId = user.getId();
+
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Profile not found, please create one"));
+
+        if (!profile.getUser().getId().equals(verifiedUserId))
+            throw new RuntimeException("You can only update your own profile");
+
+        profile.setHeadline(profileRequest.getHeadline());
+        profile.setCity(profileRequest.getCity());
+        profile.setPhoneNumber(profileRequest.getPhoneNumber());
+        profile.setDateOfBirth(profileRequest.getDateOfBirth());
+        profile.setBio(profileRequest.getBio());
+        profile.setEmploymentStatus(profileRequest.getEmploymentStatus());
+        profile.setResumeUrl(profileRequest.getResumeUrl());
+        profile.setSkills(profileRequest.getSkills());
+
+        Profile savedProfile = profileRepository.save(profile);
+
+        return profileMapper.toResponse(savedProfile);
     }
 
     // method to get the authenticated user

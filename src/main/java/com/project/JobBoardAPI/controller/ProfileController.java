@@ -24,4 +24,21 @@ public class ProfileController {
         ProfileResponse response = profileService.createProfile(profileRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    // gets a profile by id
+    // returns a 200 status code
+    @GetMapping("/get/{profileId}")
+    public ResponseEntity<ProfileResponse> getProfile(@PathVariable Long profileId) {
+        ProfileResponse response = profileService.getProfile(profileId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // updates a profile
+    // returns a 200 status code
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProfileResponse> updateProfile(@PathVariable Long id,
+            @Valid @RequestBody ProfileRequest profileRequest) {
+        ProfileResponse response = profileService.updateProfile(id, profileRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
