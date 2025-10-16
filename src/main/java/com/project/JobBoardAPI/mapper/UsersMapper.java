@@ -11,7 +11,6 @@ public interface UsersMapper {
 
     // Maps RegisterRequest to Users entity
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "role", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     Users toEntity(RegisterRequest request);
 

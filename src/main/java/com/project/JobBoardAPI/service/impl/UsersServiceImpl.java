@@ -13,7 +13,6 @@ import com.project.JobBoardAPI.dto.users.*;
 import com.project.JobBoardAPI.exceptions.custom.*;
 import com.project.JobBoardAPI.mapper.UsersMapper;
 import com.project.JobBoardAPI.model.entity.Users;
-import com.project.JobBoardAPI.model.enums.Role;
 import com.project.JobBoardAPI.security.jwt.JWTUtil;
 import com.project.JobBoardAPI.service.interfaces.UserService;
 
@@ -41,7 +40,6 @@ public class UsersServiceImpl implements UserService {
       Users user = usersMapper.toEntity(registerRequest);
 
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setRole(Role.EMPLOYER);
       Users savedUser = usersRepository.save(user);
    
       String jwtToken = jwtUtil.generateToken(savedUser.getEmail());
