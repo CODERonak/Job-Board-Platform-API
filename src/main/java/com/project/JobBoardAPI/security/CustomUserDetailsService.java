@@ -4,9 +4,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.project.JobBoardAPI.UsersRepository;
 import com.project.JobBoardAPI.exceptions.custom.NotFoundException;
 import com.project.JobBoardAPI.model.entity.Users;
+import com.project.JobBoardAPI.repository.UsersRepository;
 
 import lombok.AllArgsConstructor;
 

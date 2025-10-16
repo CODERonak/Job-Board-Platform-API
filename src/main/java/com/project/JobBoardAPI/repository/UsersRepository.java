@@ -1,4 +1,4 @@
-package com.project.JobBoardAPI;
+package com.project.JobBoardAPI.repository;
 
 import java.util.Optional;
 

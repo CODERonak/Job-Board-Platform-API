@@ -8,11 +8,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.project.JobBoardAPI.UsersRepository;
 import com.project.JobBoardAPI.dto.users.*;
 import com.project.JobBoardAPI.exceptions.custom.*;
 import com.project.JobBoardAPI.mapper.UsersMapper;
 import com.project.JobBoardAPI.model.entity.Users;
+import com.project.JobBoardAPI.repository.UsersRepository;
 import com.project.JobBoardAPI.security.jwt.JWTUtil;
 import com.project.JobBoardAPI.service.interfaces.UserService;
 
