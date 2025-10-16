@@ -24,7 +24,7 @@ public class ProfileResponse {
 
     private EmploymentStatus employmentStatus;
 
-    private String resumePath;
+    private String resumeUrl;
 
     private String skills;
 }
