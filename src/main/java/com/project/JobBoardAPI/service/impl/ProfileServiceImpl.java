@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.JobBoardAPI.dto.profile.ProfileRequest;
 import com.project.JobBoardAPI.dto.profile.ProfileResponse;
-import com.project.JobBoardAPI.exceptions.custom.AlreadyExistsException;
-import com.project.JobBoardAPI.exceptions.custom.NotFoundException;
+import com.project.JobBoardAPI.exceptions.custom.*;
 import com.project.JobBoardAPI.mapper.ProfileMapper;
 import com.project.JobBoardAPI.model.entity.Profile;
 import com.project.JobBoardAPI.model.entity.Users;
@@ -67,7 +66,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .orElseThrow(() -> new NotFoundException("Profile not found, please create one"));
 
         if (!profile.getUser().getId().equals(verifiedUserId))
-            throw new RuntimeException("You can only update your own profile");
+            throw new AccessDeniedException("You can only update your own profile");
 
         profile.setHeadline(profileRequest.getHeadline());
         profile.setCity(profileRequest.getCity());
@@ -81,15 +80,6 @@ public class ProfileServiceImpl implements ProfileService {
         Profile savedProfile = profileRepository.save(profile);
 
         return profileMapper.toResponse(savedProfile);
-    }
-
-    // method to get the authenticated user
-    private Users getAuthenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String authenticatedUserEmail = auth.getName();
-
-        return usersRepository.findByEmail(authenticatedUserEmail)
-                .orElseThrow(() -> new NotFoundException("User not found, register first"));
     }
 
     // lists profiles by employment status
@@ -110,4 +100,12 @@ public class ProfileServiceImpl implements ProfileService {
                 .toList();
     }
 
+    // method to get the authenticated user
+    private Users getAuthenticatedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String authenticatedUserEmail = auth.getName();
+
+        return usersRepository.findByEmail(authenticatedUserEmail)
+                .orElseThrow(() -> new NotFoundException("User not found, register first"));
+    }
 }

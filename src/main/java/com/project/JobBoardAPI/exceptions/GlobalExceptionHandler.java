@@ -1,15 +1,11 @@
 package com.project.JobBoardAPI.exceptions;
 
-import java.nio.file.AccessDeniedException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.project.JobBoardAPI.exceptions.custom.AlreadyExistsException;
-import com.project.JobBoardAPI.exceptions.custom.InvalidCredentials;
-import com.project.JobBoardAPI.exceptions.custom.NotFoundException;
+import com.project.JobBoardAPI.exceptions.custom.*;
 
 // Global exception handler for the application
 @RestControllerAdvice
