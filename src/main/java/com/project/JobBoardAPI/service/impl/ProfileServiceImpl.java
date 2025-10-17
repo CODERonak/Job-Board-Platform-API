@@ -1,5 +1,7 @@
 package com.project.JobBoardAPI.service.impl;
 
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.project.JobBoardAPI.exceptions.custom.NotFoundException;
 import com.project.JobBoardAPI.mapper.ProfileMapper;
 import com.project.JobBoardAPI.model.entity.Profile;
 import com.project.JobBoardAPI.model.entity.Users;
+import com.project.JobBoardAPI.model.enums.EmploymentStatus;
 import com.project.JobBoardAPI.repository.*;
 import com.project.JobBoardAPI.service.interfaces.ProfileService;
 
@@ -87,6 +90,24 @@ public class ProfileServiceImpl implements ProfileService {
 
         return usersRepository.findByEmail(authenticatedUserEmail)
                 .orElseThrow(() -> new NotFoundException("User not found, register first"));
+    }
+
+    // lists profiles by employment status
+    @Override
+    public List<ProfileResponse> findProfileByEmploymentStatus(EmploymentStatus employmentStatus) {
+        return profileRepository.findByEmploymentStatus(employmentStatus)
+                .stream()
+                .map(profileMapper::toResponse)
+                .toList();
+    }
+
+    // lists profiles by city
+    @Override
+    public List<ProfileResponse> findProfileByCity(String city) {
+        return profileRepository.findByCity(city)
+                .stream()
+                .map(profileMapper::toResponse)
+                .toList();
     }
 
 }
