@@ -4,5 +4,6 @@ package com.project.JobBoardAPI.model.enums;
 public enum EmploymentStatus {
     ACTIVELY_LOOKING, 
     NOT_LOOKING, 
-    OPEN_TO_OFFERS
+    OPEN_TO_OFFERS,
+    EMPLOYED
 }
